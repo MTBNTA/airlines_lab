@@ -27,8 +27,8 @@ public class PassengerController {
 
     // Display specific passenger details
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Passenger> getPassengerById(@PathVariable Long id){
-        Optional<Passenger> passenger = passengerService.getPassengerById(id);
+    public ResponseEntity<Passenger> getPassengerById(@PathVariable Long passengerId){
+        Optional<Passenger> passenger = passengerService.getPassengerById(passengerId);
         if (passenger.isPresent()){
             return new ResponseEntity<>(passenger.get(), HttpStatus.OK);
         }

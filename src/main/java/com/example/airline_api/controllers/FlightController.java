@@ -2,12 +2,7 @@ package com.example.airline_api.controllers;
 
 import com.example.airline_api.models.Flight;
 import com.example.airline_api.models.NewFlightDTO;
-import com.example.airline_api.models.NewPassengerDTO;
-import com.example.airline_api.models.Passenger;
-import com.example.airline_api.repositories.FlightRepository;
 import com.example.airline_api.services.FlightService;
-import com.example.airline_api.services.PassengerService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +17,6 @@ public class FlightController {
 
     @Autowired
     FlightService flightService;
-
-    @Autowired
-    PassengerService passengerService;
 
     // Display all available flights
     @GetMapping
@@ -50,12 +42,10 @@ public class FlightController {
         return new ResponseEntity<>(addedFlight, HttpStatus.CREATED);
     }
 
-    // Book passenger on a flight
-    @Transactional
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Flight> addPassengerToFlight(@RequestBody NewFlightDTO newFlightDTO, @PathVariable Long flightId, @PathVariable Long passengerId){
-        Flight flight = flightService.addPassengetToFlight(flightId, passengerId, newFlightDTO);
-        return new ResponseEntity<>(flight, HttpStatus.OK);
+    public ResponseEntity<Flight> addPassengerToFlight(@PathVariable Long flightId, NewFlightDTO newFlightDTO){
+       Flight flight = flightService.addPassengetToFlight(flightId, newFlightDTO);
+        return new ResponseEntity<>(flight, HttpStatus.CREATED);
     }
 
     // Cancel flight

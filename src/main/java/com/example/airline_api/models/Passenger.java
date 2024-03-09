@@ -25,8 +25,8 @@ public class Passenger {
     @ManyToMany
     @JoinTable(
             name = "passengers_flights",
-            joinColumns = @JoinColumn(name = "passenger_id"),
-            inverseJoinColumns = @JoinColumn(name = "flight_id")
+            joinColumns = @JoinColumn(name = "passenger_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "flight_id", nullable = false)
     )
     private List<Flight> flights;
 

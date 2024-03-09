@@ -1,28 +1,25 @@
 package com.example.airline_api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToMany;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewFlightDTO {
 
     private String destination;
     private int capacity;
-    private String departureDate;
     private String departureTime;
+    private String departureDate;
     private List<Long> passengerIds;
 
     public NewFlightDTO() {
     }
 
-    public NewFlightDTO(String destination, int capacity, String departureDate, String departureTime, List<Long> passengerIds) {
+    public NewFlightDTO(String destination, int capacity, String departureTime, String departureDate) {
         this.destination = destination;
         this.capacity = capacity;
-        this.departureDate = departureDate;
         this.departureTime = departureTime;
-        this.passengerIds = passengerIds;
+        this.departureDate = departureDate;
+        this.passengerIds = new ArrayList<>();
     }
 
     public String getDestination() {
@@ -41,20 +38,20 @@ public class NewFlightDTO {
         this.capacity = capacity;
     }
 
-    public String getDepartureDate() {
-        return departureDate;
-    }
-
-    public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate;
-    }
-
     public String getDepartureTime() {
         return departureTime;
     }
 
     public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
+    }
+
+    public String getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(String departureDate) {
+        this.departureDate = departureDate;
     }
 
     public List<Long> getPassengerIds() {

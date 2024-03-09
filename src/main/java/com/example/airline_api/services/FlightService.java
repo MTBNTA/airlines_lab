@@ -2,7 +2,6 @@ package com.example.airline_api.services;
 
 import com.example.airline_api.models.Flight;
 import com.example.airline_api.models.NewFlightDTO;
-import com.example.airline_api.models.NewPassengerDTO;
 import com.example.airline_api.models.Passenger;
 import com.example.airline_api.repositories.FlightRepository;
 import com.example.airline_api.repositories.PassengerRepository;
@@ -10,7 +9,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +20,9 @@ public class FlightService {
 
     @Autowired
     PassengerRepository passengerRepository;
+
+    @Autowired
+    PassengerService passengerService;
 
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
@@ -36,6 +37,17 @@ public class FlightService {
         return flight;
     }
 
+    @Transactional
+    public Flight addPassengetToFlight(Long flightId, NewFlightDTO newFlightDTO) {
+        Flight flight = flightRepository.findById(flightId).get();
+        for (Long passengerIds : newFlightDTO.getPassengerIds()){
+            Passenger passenger = passengerRepository.findById(passengerIds).get();
+            flight.addPassenger(passenger);
+        }
+        flightRepository.save(flight);
+        return flight;
+    }
+
     public void cancelFlight(Long id) {
         Flight flight = flightRepository.findById(id).get();
 
@@ -44,26 +56,6 @@ public class FlightService {
             passengerRepository.save(passenger);
         }
         flightRepository.delete(flight);
-    }
-
-    @Transactional // updateFlightWithPassenger
-    public Flight addPassengetToFlight(Long flightId, Long passengerId, NewFlightDTO newFlightDTO) {
-        Flight flightToUpdate = flightRepository.findById(flightId);
-
-        flightToUpdate.setDestination(newFlightDTO.getDestination());
-        flightToUpdate.setCapacity(newFlightDTO.getCapacity());
-        flightToUpdate.setDepartureDate(newFlightDTO.getDepartureDate());
-        flightToUpdate.setDepartureTime(newFlightDTO.getDepartureTime());
-        flightToUpdate.setPassengers(new ArrayList<>());
-        for (Long newPassengerId : newFlightDTO.getPassengerIds()) {
-            Passenger passenger = passengerRepository.findById(passengerId).get();
-            flightToUpdate.addPassenger(passengerId);
-        }
-
-        Passenger passengerToAdd = passengerRepository.findById(passengerId).get();
-
-        passengerToAdd.addFlight(flightToUpdate);
-        return flightRepository.save(flightToUpdate);
     }
 
 }

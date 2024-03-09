@@ -90,8 +90,8 @@ public class Flight {
         this.passengers = passengers;
     }
 
-    public void addPassenger(Long passengerId){
-        this.passengers.add(passengerId);
+    public void addPassenger(Passenger passenger){
+        this.passengers.add(passenger);
     }
 
 }
